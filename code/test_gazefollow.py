@@ -23,18 +23,8 @@ import logging
 
 from scipy import signal
 
-data_transforms = {
-    'train': transforms.Compose([
-        transforms.Resize((224, 224)),
-        transforms.ToTensor(),
-        transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
-    ]),
-    'test': transforms.Compose([
-        transforms.Resize((224, 224)),
-        transforms.ToTensor(),
-        transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
-    ])
-}
+from utils import data_transforms
+from utils import get_paste_kernel, kernel_map
 
 # log setting
 log_dir = 'log/'
@@ -49,41 +39,6 @@ logging.basicConfig(level=logging.INFO,
 console = logging.StreamHandler()
 console.setLevel(logging.INFO)
 logging.getLogger('').addHandler(console)
-
-
-def get_paste_kernel(im_shape, points, kernel, shape=(224 // 4, 224 // 4)):
-    # square kernel
-    k_size = kernel.shape[0] // 2
-    x, y = points
-    image_height, image_width = im_shape[:2]
-    x, y = int(round(image_width * x)), int(round(y * image_height))
-    x1, y1 = x - k_size, y - k_size
-    x2, y2 = x + k_size, y + k_size
-    h, w = shape
-    if x2 >= w:
-        w = x2 + 1
-    if y2 >= h:
-        h = y2 + 1
-    heatmap = np.zeros((h, w))
-    left, top, k_left, k_top = x1, y1, 0, 0
-    if x1 < 0:
-        left = 0
-        k_left = -x1
-    if y1 < 0:
-        top = 0
-        k_top = -y1
-
-    heatmap[top:y2+1, left:x2+1] = kernel[k_top:, k_left:]
-    return heatmap[0:shape[0], 0:shape[0]]
-
-
-
-def gkern(kernlen=51, std=9):
-    """Returns a 2D Gaussian kernel array."""
-    gkern1d = signal.gaussian(kernlen, std=std).reshape(kernlen, 1)
-    gkern2d = np.outer(gkern1d, gkern1d)
-    return gkern2d
-kernel_map = gkern(21, 3)
 
 
 class GazeDataset(Dataset):
@@ -283,35 +238,18 @@ def main():
     test_set = GazeDataset(root_dir='../GazeFollowData/',
                            mat_file='../GazeFollowData/test2_annotations.mat',
                            training='test')
-    test_data_loader = DataLoader(test_set, batch_size=16*2,
+    test_data_loader = DataLoader(test_set, batch_size=1,
                                   shuffle=False, num_workers=8)
 
     net = GazeNet()
     net = DataParallel(net)
     net.cuda()
 
-    # change first conv layer
-    change_first_conv_layer = True
-    if change_first_conv_layer:
-        conv = [x.clone()for x in net.module.fpn_net.resnet.conv1.parameters()][0]
-        new_kernel_channel = conv.data.mean(dim=1, keepdim=True).repeat(1, 3, 1, 1)
-        print(conv.size(), new_kernel_channel.size())
-        new_kernel = torch.cat((conv.data, new_kernel_channel), 1)
-        print('after cat', new_kernel.size())
-        new_conv = nn.Conv2d(6, 64, kernel_size=7, stride=2, padding=3,
-                               bias=False)
-        new_conv.cuda()
-        new_conv.weight.data = new_kernel
-        print(new_conv.weight.data.size())
-        net.module.fpn_net.resnet.conv1 = new_conv
-
-    resume_training = True
-    if resume_training :
-        pretrained_dict = torch.load('../model/pretrained_model.pkl')
-        model_dict = net.state_dict()
-        pretrained_dict = {k: v for k, v in pretrained_dict.items() if k in model_dict}
-        model_dict.update(pretrained_dict)
-        net.load_state_dict(model_dict)
+    pretrained_dict = torch.load('../model/pretrained_model.pkl')
+    model_dict = net.state_dict()
+    pretrained_dict = {k: v for k, v in pretrained_dict.items() if k in model_dict}
+    model_dict.update(pretrained_dict)
+    net.load_state_dict(model_dict)
     
     test(net, test_data_loader)
 

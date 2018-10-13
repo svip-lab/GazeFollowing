@@ -1,3 +1,5 @@
+# copy from https://github.com/pytorch/vision/blob/master/torchvision/models/resnet.py
+
 import torch.nn as nn
 import math
 import torch.utils.model_zoo as model_zoo

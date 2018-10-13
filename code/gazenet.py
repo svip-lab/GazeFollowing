@@ -76,9 +76,18 @@ class GazeNet(nn.Module):
                                     nn.ReLU(inplace=True),
                                     nn.Linear(256, 2))
 
-        # todo check if inplace can be set to True
         self.relu = nn.ReLU(inplace=False)
        
+        # change first conv layer for fpn_net because we concatenate 
+        # multi-scale gaze field with image image 
+        conv = [x.clone() for x in self.fpn_net.resnet.conv1.parameters()][0]
+        new_kernel_channel = conv.data.mean(dim=1, keepdim=True).repeat(1, 3, 1, 1)
+        new_kernel = torch.cat((conv.data, new_kernel_channel), 1)
+        new_conv = nn.Conv2d(6, 64, kernel_size=7, stride=2, padding=3,
+                               bias=False)
+        new_conv.weight.data = new_kernel
+        self.fpn_net.resnet.conv1 = new_conv
+
     def forward(self, x):
         image, face_image, gaze_field, eye_position = x
         # face part forward
