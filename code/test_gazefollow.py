@@ -142,22 +142,6 @@ class GazeDataset(Dataset):
         return sample
 
 
-cosine_similarity = nn.CosineSimilarity()
-mse_distance = nn.MSELoss()
-bce_loss = nn.BCELoss()
-
-
-def F_loss(direction, predict_heatmap, eye_position, gt_position, gt_heatmap):
-    # point loss
-    heatmap_loss = bce_loss(predict_heatmap, gt_heatmap)
-
-    # angle loss
-    gt_direction = gt_position - eye_position
-    middle_angle_loss = torch.mean(1 - cosine_similarity(direction, gt_direction))
-
-    return heatmap_loss, middle_angle_loss
-
-
 def test(net, test_data_loader):
     net.eval()
     total_loss = []

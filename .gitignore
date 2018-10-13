@@ -1,3 +1,11 @@
+GazeFollowData/
+OurData/ClipVideo/
+OurData/OrigVideo/
+OurData/video_annotation/
+OurData/Images/
+model/
+
+
 *.png
 *.pb
 
