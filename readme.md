@@ -23,6 +23,6 @@ python test_ourdata.py
 cd code
 python train.py
 
-
+#TODO:
 
 
