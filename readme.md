@@ -3,6 +3,9 @@ GazeFollowData contains training and testing data from [1], please download data
 Note that the downloaded testing data may have wrong label, so we provided test2 provided from author.
 
 # download our dataset
+OurData is in https://yien01-my.sharepoint.com/:u:/g/personal/doubility_z0_tn/EWKtKxRPX61AilBPH4XcDAoBOoidryTi6em-xL8vfgxfuQ?e=NO30t6
+Please download and unzip it
+
 OurData contains data descriped in our paper.
 OurData/tools/extract_frame.py extract frame from clipVideo in 2fps.
 Different version of ffmpeg may have different results, we provide our extracted images.
