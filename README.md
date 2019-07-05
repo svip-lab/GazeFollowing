@@ -1,7 +1,7 @@
 # Gaze following
 PyTorch implementation of our ACCV2018 paper:
 
-**'Believe It or Not, We Know What You Are Looking at!'** [[paper]()]
+**'Believe It or Not, We Know What You Are Looking at!'** [[paper](https://arxiv.org/pdf/1907.02364.pdf)]
 [[poster](images/poster.pdf)]
 
 Dongze Lian*, Zehao Yu*, Shenghua Gao
@@ -12,9 +12,9 @@ Dongze Lian*, Zehao Yu*, Shenghua Gao
 
 GazeFollow dataset is proposed in [1], please download the dataset from http://gazefollow.csail.mit.edu/download.html.
 Note that the downloaded testing data may have wrong label, so we request test2 provided by author. 
-I do not know whether the author update their testing set. If not, it is better for you to e-mail author in [1]. 
-For your convenience, we also paste the testing set link [here](http://videogazefollow.csail.mit.edu/downloads/test_set.zip) provided by author in [1] when we request. 
-(Note that the license is from [1])
+I do not know whether the author update their testing set. If not, it is better for you to e-mail authors in [1]. 
+For your convenience, we also paste the testing set link [here](http://videogazefollow.csail.mit.edu/downloads/test_set.zip) provided by authors in [1] when we request. 
+(Note that the license is in [1])
 
 
 # Download our dataset
