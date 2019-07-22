@@ -51,6 +51,12 @@ cd code
 python train.py
 ```
 
+# Inference
+simply run python inference.py image_path eye_x eye_y to infer the gaze. Note that eye_x and eye_y is the normalized coordinate (from 0 - 1) for eye posization. The script will save the inference result in tmp.png.
+```
+cd code
+python inference.py ../images/00000003.jpg 0.52 0.14
+```
 
 # Reference:
 [1] Recasens*, A., Khosla*, A., Vondrick, C., Torralba, A.: Where are they looking? In: Advances in Neural
