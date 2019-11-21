@@ -33,13 +33,13 @@ OurData/tools/create_video_image_list.py
 extract annotation to json.
 
 # Testing on gazefollow data
+Please download the [pretrained model](https://drive.google.com/open?id=1eN0NysvRNsWaoyJea3w1Tdbt7iPMvjmp) manually and save to model/
 ```
 cd code
 python test_gazefollow.py
 ```
 
 # Test on our data
-Please download the [pretrained model](https://drive.google.com/open?id=1eN0NysvRNsWaoyJea3w1Tdbt7iPMvjmp) manually and save to model/
 ```
 cd code
 python test_ourdata.py
