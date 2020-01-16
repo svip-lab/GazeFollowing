@@ -225,8 +225,8 @@ def test(net, test_data_loader):
     np.savez('multi_scale_concat_heatmaps.npz', heatmaps=heatmaps)
 
     logging.info('average loss : %s'%str(np.mean(np.array(total_loss), axis=0)))
-    logging.info('average error: %s'%str(np.mean(np.array(total_error), axis=0)))
-
+    logging.info('average error [mean dist, angle, mean angle]: %s'%str(np.mean(np.array(total_error), axis=0)))
+    
     net.train()
     return 0.0
 
