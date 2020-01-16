@@ -177,10 +177,10 @@ def test(net, test_data_loader):
         loss = heatmap_loss + m_angle_loss
 
 
-        total_loss.append([heatmap_loss.data[0],
-                          m_angle_loss.data[0], loss.data[0]])
+        total_loss.append([heatmap_loss.item(),
+                          m_angle_loss.item(), loss.item()])
         logging.info('loss: %.5lf, %.5lf, %.5lf'%( \
-              heatmap_loss.data[0], m_angle_loss.data[0], loss.data[0]))
+              heatmap_loss.item(), m_angle_loss.item(), loss.item()))
 
         middle_output = direction.cpu().data.numpy()
         final_output = predict_heatmap.cpu().data.numpy()
@@ -219,10 +219,10 @@ def test(net, test_data_loader):
             total_error.append([f_dist, m_angle, f_angle])
             info_list.append(list(f_point))
     info_list = np.array(info_list)
-    #np.savez('multi_scale_concat_prediction.npz', info_list=info_list)
+    np.savez('multi_scale_concat_prediction.npz', info_list=info_list)
 
     heatmaps = np.stack(heatmaps)
-    #np.savez('multi_scale_concat_heatmaps.npz', heatmaps=heatmaps)
+    np.savez('multi_scale_concat_heatmaps.npz', heatmaps=heatmaps)
 
     logging.info('average loss : %s'%str(np.mean(np.array(total_loss), axis=0)))
     logging.info('average error: %s'%str(np.mean(np.array(total_error), axis=0)))
