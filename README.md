@@ -39,6 +39,14 @@ cd code
 python test_gazefollow.py
 ```
 
+# Evaluation metrics
+
+```
+cd code
+python cal_min_dis.py
+python cal_auc.py
+```
+
 # Test on our data
 ```
 cd code
